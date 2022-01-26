@@ -1,42 +1,3 @@
-@extends('Admin.tamplate')
-
-@section('content')
-<div class="content">
-      <div class="container-fluid">
-        <!-- isi content -->
-        <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">DataTable with default features</h3>
-              </div>
-              <!-- Button trigger modal -->
-              <div class="card-body">
-                    {{-- <button type="button" id="tombol-tambah" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#produk">
-                        <i class="fas fa-plus"></i> Tambah
-                    </button> --}}
-            <a href="javascript:void(0)" class="mb-3 btn btn-lg btn-info" id="tombol-tambah">Tambah Produk</a>
-            <table id="tbl_example" class="table table-bordered" width="100%">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Produk</th>
-                        <th>Foto</th>
-                        <th>Harga</th>
-                        <th>Detail Produk</th>
-                        <th>Kategori</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        <!-- isi content -->
-        </div>
-    </div>
-  @include('Admin.partials.modal.create')
-
-@endsection
-@section('script')
 
 <script type="text/javascript">
 
@@ -115,7 +76,7 @@ function save(){
                 }
             },
             error: function(error){
-                console.log(error);
+                console.log(error)
                 alert("Data Not Saved");
             }
         });
@@ -163,5 +124,3 @@ function save(){
             })
         });
 </script>
-
-@endsection

@@ -1,7 +1,8 @@
-@extends('Admin.tamplate')
+@extends('Admin.index')
 
 @section('content')
-<div class="content">
+
+    <div class="content">
       <div class="container-fluid">
         <!-- isi content -->
         <div class="card">
@@ -10,30 +11,23 @@
               </div>
               <!-- Button trigger modal -->
               <div class="card-body">
-                    {{-- <button type="button" id="tombol-tambah" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#produk">
-                        <i class="fas fa-plus"></i> Tambah
-                    </button> --}}
-            <a href="javascript:void(0)" class="mb-3 btn btn-lg btn-info" id="tombol-tambah">Tambah Produk</a>
-            <table id="tbl_example" class="table table-bordered" width="100%">
+            <a href="javascript:void(0)" class="mb-3 btn btn-lg btn-info" id="tombol-tambah-kategori">Tambah Produk</a>
+            <table id="tbl_kategori" class="table table-bordered" width="100%">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Produk</th>
-                        <th>Foto</th>
-                        <th>Harga</th>
-                        <th>Detail Produk</th>
                         <th>Kategori</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-
                 </tbody>
             </table>
         <!-- isi content -->
         </div>
     </div>
-  @include('Admin.partials.modal.create')
+
+    @include('Admin.kategori.kategoriCreate')
 
 @endsection
 @section('script')
@@ -50,12 +44,12 @@
 
 
     $(document).ready(function() {
-    $('#tbl_example').DataTable({
+    $('#tbl_kategori').DataTable({
         ordering: false,
         processing: true,
         serverSide: true,
         ajax : {
-            url: "{{ route('produk.index') }}",
+            url: "{{ route('kategori.index') }}",
             type: "GET",
         },
         columns: [
@@ -64,50 +58,38 @@
                     orderable: false,
                     searchable: false
             },
-            {data:"produk", name:"produk"},
-            {data:"foto", name:"foto"},
-            {data:"harga", name:"harga"},
-            {data:"detailProduk", nama:"detailProduk"},
-            {data:"kategori", name:"kategori"},
+            {data:"nama_kategori", name:"nama_kategori"},
             {data:"action", name:"action", orderable: false, searchable: false}
         ],
-         columnDefs:
-            [{
-                "targets": 2,
-                data: 'foto',
-                "render": function (data, type, row, meta) {
-                    // return '<img src="' + data + '" alt="' + data + '"height="16" width="16"/>';
-                    return "<img src=\"/pict/" + data + "\" height=\"50\"/>";
-                }
-            }],
         order: [[0, 'asc']]
     });
 });
 
-$('#tombol-tambah').click(function () {
+$('#tombol-tambah-kategori').click(function () {
             $('#tombol-simpan').val("create-post"); //valuenya menjadi create-post
             $('#id').val(''); //valuenya menjadi kosong
             $('#form').trigger("reset"); //mereset semua input dll didalamnya
-            $('#exampleModalLabel').html("Tambah Produk"); //valuenya tambah pegawai baru
-            $('#produk_modal').modal('show'); //modal tampil
+            $('#exampleModalLabel').html("Tambah kategori"); //valuenya tambah pegawai baru
+            $('#kategori_modal').modal('show'); //modal tampil
         });
 
 function save(){
         $('#errors_produk').text('');
         var formData = new FormData($('#form')[0]);
-        $.ajax({
-            url : "{{ route('produk.store') }}",
+            $.ajax({
+            url : "{{ route('kategori.store') }}",
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
             dataType: "JSON",
             success: function (response){
+                console.log(response)
                 if(response.status){
                     alert("Data Saved");
-                    var oTable = $('#tbl_example').dataTable();
+                    var oTable = $('#tbl_kategori').dataTable();
                     oTable.fnDraw(false); //reset datatable
-                    $('#produk_modal').modal('hide')
+                    $('#kategori_modal').modal('hide')
                 }else{
                     if(response.errors.produk){
                         $('#errors_produk').text(response.errors.produk[0]);
@@ -122,20 +104,17 @@ function save(){
     }
 
     $('body').on('click', '.edit-post', function () {
-            $('#errors_produk').text('');
+            // $('#errors_produk').text('');
+            console.log('hai')
             var data_id = $(this).data('id');
-            $.get('produk/' + data_id + '/edit', function (data) {
+            $.get('kategori/' + data_id + '/edit', function (data) {
                 $('#form')[0].reset();
                 $('#exampleModalLabel').html("Edit Post");
                 $('#tombol-simpan').val("edit-post");
-                $('#produk_modal').modal('show');
+                $('#kategori_modal').modal('show');
                 //set value masing-masing id berdasarkan data yg diperoleh dari ajax get request diatas
                 $('#id').val(data.id);
-                $('#produk').val(data.produk);
-                $('#harga').val(data.harga);
-                $('#detailProduk').val(data.detailProduk);
-                $('#id_kategori').val(data.id_kategori);
-                //$('#foto').val(data.foto);
+                $('#nama_kategori').val(data.nama_kategori);
             })
         });
 
@@ -148,7 +127,7 @@ function save(){
     //jika tombol hapus pada modal konfirmasi di klik maka
         $('#tombol-hapus').click(function () {
             $.ajax({
-                url: "/produk/" + dataId, //eksekusi ajax ke url ini
+                url: "/kategori/" + dataId, //eksekusi ajax ke url ini
                 type: 'delete',
                 beforeSend: function () {
                     $('#tombol-hapus').text('Hapus Data'); //set text untuk tombol hapus
@@ -156,7 +135,7 @@ function save(){
                 success: function (data) { //jika sukses
                     setTimeout(function () {
                         $('#konfirmasi-modal').modal('hide'); //sembunyikan konfirmasi modal
-                        var oTable = $('#tbl_example').dataTable();
+                        var oTable = $('#tbl_kategori').dataTable();
                         oTable.fnDraw(false); //reset datatable
                     });
                 }

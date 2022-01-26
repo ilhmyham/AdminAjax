@@ -1,5 +1,5 @@
 <div class="modal fade" id="produk_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -20,6 +20,18 @@
             <div class="mb-3">
                 <label for="" class="form-label">foto</label>
                 <input type="file" name="foto" id="foto" class="form-control" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">harga</label>
+                <input type="number" name="harga" id="harga" class="form-control" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Detail Produk</label>
+                {{-- <input type="text" name="detailProduk" id="detailProduk" class="form-control" aria-describedby="emailHelp"> --}}
+                <div class="form-floating">
+                    <textarea name="detailProduk" id="detailProduk" class="form-control" placeholder="Detail" id="floatingTextarea2" style="height: 180px"></textarea>
+                    <label for="floatingTextarea2">Detail</label>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">kategori</label>

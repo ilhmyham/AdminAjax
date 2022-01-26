@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\produkController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\kategoriController;
+use App\Http\Controllers\produkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +21,4 @@ Route::get('/', function () {
 });
 
 Route::resource('/produk', produkController::class);
+Route::resource('/kategori', kategoriController::class);

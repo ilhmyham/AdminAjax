@@ -56,12 +56,12 @@ class produkController extends Controller
      */
     public function store(Request $request)
     {
-        // return true;
         $id = $request->id;
-
         $validator = Validator::make($request->all(), [
             'produk' => 'required',
             //'foto' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'harga' => 'required',
+            'detailProduk' => 'required',
             'id_kategori' => 'required'
         ]);
 
@@ -82,6 +82,8 @@ class produkController extends Controller
                     [
                         'produk' => $request->produk,
                         'foto' => $namaFoto,
+                        'harga' => $request->harga,
+                        'detailProduk' => $request->detailProduk,
                         'id_kategori' => $request->id_kategori
                     ]
                 );
@@ -90,6 +92,8 @@ class produkController extends Controller
                 produk::find($request->id)->update(
                     [
                         'produk' => $request->produk,
+                        'harga' => $request->harga,
+                        'detailProduk' => $request->detailProduk,
                         'id_kategori' => $request->id_kategori
                     ]
                 );
@@ -104,6 +108,8 @@ class produkController extends Controller
                 [
                     'produk' => $request->produk,
                     'foto' => $namaFoto,
+                    'harga' => $request->harga,
+                    'detailProduk' => $request->detailProduk,
                     'id_kategori' => $request->id_kategori
                 ]
             );

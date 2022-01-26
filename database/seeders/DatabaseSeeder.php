@@ -18,29 +18,35 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         produk::create([
-            'produk' => 'sinzhui',
+            'produk' => 'wayang kulit',
             'foto' => 'laravel.png',
+            'harga' => 3000000,
+            'detailProduk' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, odit.',
             'id_kategori' => 1
         ]);
 
         produk::create([
-            'produk' => 'lifeboy',
+            'produk' => 'reog',
             'foto' => 'codeignater.png',
-            'id_kategori' => 1
+            'harga' => 2000000,
+            'detailProduk' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, odit.',
+            'id_kategori' => 2
         ]);
 
         produk::create([
-            'produk' => 'detol',
+            'produk' => 'selendang',
             'foto' => 'php.png',
-            'id_kategori' => 1
+            'harga' => 5000000,
+            'detailProduk' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, odit.',
+            'id_kategori' => 2
         ]);
 
         kategori::create([
-            'nama_kategori' => 'sabun'
+            'nama_kategori' => 'wayang'
         ]);
 
         kategori::create([
-            'nama_kategori' => 'sampo'
+            'nama_kategori' => 'aksesoris'
         ]);
     }
 }
