@@ -13,7 +13,10 @@
                     {{-- <button type="button" id="tombol-tambah" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#produk">
                         <i class="fas fa-plus"></i> Tambah
                     </button> --}}
-            <a href="javascript:void(0)" class="mb-3 btn btn-lg btn-info" id="tombol-tambah">Tambah Produk</a>
+            {{-- <a href="javascript:void(0)" class="mb-3 btn btn-lg btn-info" id="tombol-tambah">Tambah Produk</a> --}}
+            <button class="btn btn-lg btn-info" onclick="tampil()">
+                tambah
+            </button>
             <table id="tbl_example" class="table table-bordered" width="100%">
                 <thead>
                     <tr>
@@ -50,6 +53,7 @@
 
 
     $(document).ready(function() {
+    // function show() {
     $('#tbl_example').DataTable({
         ordering: false,
         processing: true,
@@ -68,32 +72,38 @@
             {data:"foto", name:"foto"},
             {data:"harga", name:"harga"},
             {data:"detailProduk", nama:"detailProduk"},
-            {data:"kategori", name:"kategori"},
-            {data:"action", name:"action", orderable: false, searchable: false}
+            {data:"kategori.nama_kategori", name:"kategori.nama_kategori    "},
+            {data:"actions", name:"actions", orderable: false, searchable: false}
         ],
          columnDefs:
             [{
                 "targets": 2,
-                data: 'foto',
                 "render": function (data, type, row, meta) {
-                    // return '<img src="' + data + '" alt="' + data + '"height="16" width="16"/>';
                     return "<img src=\"/pict/" + data + "\" height=\"50\"/>";
                 }
             }],
-        order: [[0, 'asc']]
     });
 });
 
-$('#tombol-tambah').click(function () {
-            $('#tombol-simpan').val("create-post"); //valuenya menjadi create-post
-            $('#id').val(''); //valuenya menjadi kosong
-            $('#form').trigger("reset"); //mereset semua input dll didalamnya
-            $('#exampleModalLabel').html("Tambah Produk"); //valuenya tambah pegawai baru
-            $('#produk_modal').modal('show'); //modal tampil
-        });
+// $('#tombol-tambah').click(function () {
+//             $('#errors_produk').text('');
+//             $('#tombol-simpan').val("create-post"); //valuenya menjadi create-post
+//             $('#id').val(''); //valuenya menjadi kosong
+//             $('#form').trigger("reset"); //mereset semua input dll didalamnya
+//             $('#exampleModalLabel').html("Tambah Produk"); //valuenya tambah pegawai baru
+//             $('#produk_modal').modal('show'); //modal tampil
+//         });
+
+function tampil(){
+    $('#errors_produk').text('');
+    $('#tombol-simpan').val("create-post"); //valuenya menjadi create-post
+    $('#id').val(''); //valuenya menjadi kosong
+    $('#form').trigger("reset"); //mereset semua input dll didalamnya
+    $('#exampleModalLabel').html("Tambah Produk"); //valuenya tambah pegawai baru
+    $('#produk_modal').modal('show'); //modal tampil
+}
 
 function save(){
-        $('#errors_produk').text('');
         var formData = new FormData($('#form')[0]);
         $.ajax({
             url : "{{ route('produk.store') }}",
@@ -102,15 +112,15 @@ function save(){
             contentType: false,
             processData: false,
             dataType: "JSON",
-            success: function (response){
-                if(response.status){
+            success: function (data){
+                if(data.status){
                     alert("Data Saved");
                     var oTable = $('#tbl_example').dataTable();
                     oTable.fnDraw(false); //reset datatable
                     $('#produk_modal').modal('hide')
                 }else{
-                    if(response.errors.produk){
-                        $('#errors_produk').text(response.errors.produk[0]);
+                    if(data.errors.produk){
+                        $('#errors_produk').text(data.errors.produk[0]);
                     }
                 }
             },
@@ -123,7 +133,7 @@ function save(){
 
     $('body').on('click', '.edit-post', function () {
             $('#errors_produk').text('');
-            var data_id = $(this).data('id');
+            var data_id = $(this).attr('id');
             $.get('produk/' + data_id + '/edit', function (data) {
                 $('#form')[0].reset();
                 $('#exampleModalLabel').html("Edit Post");

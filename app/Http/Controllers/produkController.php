@@ -17,21 +17,22 @@ class produkController extends Controller
      */
     public function index(Request $request)
     {
-        // $produk = produk::orderByDesc('created_at')->get();
         $kategori = kategori::all()->pluck('nama_kategori', 'id');
-        $produk = produk::with('kategori')->orderByDesc('created_at')->get();
+
         if ($request->ajax()) {
+            $produk = produk::with('kategori')->orderByDesc('created_at');
             return Datatables::of($produk)
-                ->addColumn('action', function ($data) {
-                    $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i> Edit</a>';
+                ->addIndexColumn()
+                ->addColumn('actions', function ($produk) {
+                    $button = '<a href="javascript:void(0)" data-toggle="tooltip" id="' . $produk->id . '" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i> Edit</a>';
                     $button .= '&nbsp;&nbsp;';
-                    $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';
+                    $button .= '<button type="button" name="delete" id="' . $produk->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';
                     return $button;
                 })
-                ->addColumn('kategori', function (produk $dataProduk) {
-                    return $dataProduk->kategori->nama_kategori;
-                })
-                ->addIndexColumn()
+                // ->addColumn('kategori', function (produk $dataProduk) {
+                //     return $dataProduk->kategori->nama_kategori;
+                // })
+                ->rawColumns(['actions'])
                 ->make(true);
         }
 
@@ -56,7 +57,6 @@ class produkController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->id;
         $validator = Validator::make($request->all(), [
             'produk' => 'required',
             //'foto' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
